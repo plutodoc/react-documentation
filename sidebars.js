@@ -24,6 +24,7 @@ const sidebars = {
     "api/react-component",
     "api/react-dom",
     "api/react-dom-client",
+    "api/react-dom-server",
   ],
 };
 
