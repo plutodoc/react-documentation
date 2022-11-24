@@ -1,8 +1,14 @@
 # DOM Elements
 
-React implements a browser-independent DOM system for performance and cross-browser compatibility. We took the opportunity to clean up a few rough edges in browser DOM implementations.
+React implements a browser-independent DOM system for performance and
+cross-browser compatibility. We took the opportunity to clean up a few rough
+edges in browser DOM implementations.
 
-In React, all DOM properties and attributes (including event handlers) should be camelCased. For example, the HTML attribute `tabindex` corresponds to the attribute `tabIndex` in React. The exception is `aria-*` and `data-*` attributes, which should be lowercased. For example, you can keep `aria-label` as `aria-label`.
+In React, all DOM properties and attributes (including event handlers) should be
+camelCased. For example, the HTML attribute `tabindex` corresponds to the
+attribute `tabIndex` in React. The exception is `aria-*` and `data-*`
+attributes, which should be lowercased. For example, you can keep `aria-label`
+as `aria-label`.
 
 ## Differences In Attributes
 
@@ -10,21 +16,32 @@ There are a number of attributes that work differently between React and HTML:
 
 ### checked
 
-The `checked` attribute is supported by `<input>` components of type `checkbox` or `radio`. You can use it to set whether the component is checked. This is useful for building controlled components. `defaultChecked` is the uncontrolled equivalent, which sets whether the component is checked when it is first mounted.
+The `checked` attribute is supported by `<input>` components of type `checkbox`
+or `radio`. You can use it to set whether the component is checked. This is
+useful for building controlled components. `defaultChecked` is the uncontrolled
+equivalent, which sets whether the component is checked when it is first
+mounted.
 
 ### className
 
-To specify a CSS class, use the `className` attribute. This applies to all regular DOM and SVG elements like `<div>`, `<a>`, and others.
+To specify a CSS class, use the `className` attribute. This applies to all
+regular DOM and SVG elements like `<div>`, `<a>`, and others.
 
-If you use React with Web Components (which is uncommon), use the `class` attribute instead.
+If you use React with Web Components (which is uncommon), use the `class`
+attribute instead.
 
 ### dangerouslySetInnerHTML
 
-`dangerouslySetInnerHTML` is React’s replacement for using `innerHTML` in the browser DOM. In general, setting HTML from code is risky because it’s easy to inadvertently expose your users to a cross-site scripting (XSS) attack. So, you can set HTML directly from React, but you have to type out `dangerouslySetInnerHTML` and pass an object with a `__html` key, to remind yourself that it’s dangerous. For example:
+`dangerouslySetInnerHTML` is React’s replacement for using `innerHTML` in the
+browser DOM. In general, setting HTML from code is risky because it’s easy to
+inadvertently expose your users to a cross-site scripting (XSS) attack. So, you
+can set HTML directly from React, but you have to type out
+`dangerouslySetInnerHTML` and pass an object with a `__html` key, to remind
+yourself that it’s dangerous. For example:
 
 ```js
 function createMarkup() {
-  return {__html: 'First &middot; Second'};
+  return { __html: "First &middot; Second" };
 }
 
 function MyComponent() {
@@ -34,30 +51,43 @@ function MyComponent() {
 
 ### htmlFor
 
-Since `for` is a reserved word in JavaScript, React elements use `htmlFor` instead.
+Since `for` is a reserved word in JavaScript, React elements use `htmlFor`
+instead.
 
 #### onChange
 
-The `onChange` event behaves as you would expect it to: whenever a form field is changed, this event is fired. We intentionally do not use the existing browser behavior because `onChange` is a misnomer for its behavior and React relies on this event to handle user input in real time.
+The `onChange` event behaves as you would expect it to: whenever a form field is
+changed, this event is fired. We intentionally do not use the existing browser
+behavior because `onChange` is a misnomer for its behavior and React relies on
+this event to handle user input in real time.
 
 #### selected
 
-If you want to mark an `<option>` as selected, reference the `value` of that option in the value of its `<select>` instead. Check out “The select Tag” for detailed instructions.
+If you want to mark an `<option>` as selected, reference the `value` of that
+option in the value of its `<select>` instead. Check out “The select Tag” for
+detailed instructions.
 
 ### style
 
 :::note
 
-Some examples in the documentation use style for convenience, but **using the style attribute as the primary means of styling elements is generally not recommended**. In most cases, className should be used to reference classes defined in an external CSS stylesheet. `style` is most often used in React applications to add dynamically-computed styles at render time. See also FAQ: Styling and CSS.
+Some examples in the documentation use style for convenience, but **using the
+style attribute as the primary means of styling elements is generally not
+recommended**. In most cases, className should be used to reference classes
+defined in an external CSS stylesheet. `style` is most often used in React
+applications to add dynamically-computed styles at render time. See also FAQ:
+Styling and CSS.
 
 :::
 
-The `style` attribute accepts a JavaScript object with camelCased properties rather than a CSS string. This is consistent with the DOM `style` JavaScript property, is more efficient, and prevents XSS security holes. For example:
+The `style` attribute accepts a JavaScript object with camelCased properties
+rather than a CSS string. This is consistent with the DOM `style` JavaScript
+property, is more efficient, and prevents XSS security holes. For example:
 
 ```js
 const divStyle = {
-  color: 'blue',
-  backgroundImage: 'url(' + imgUrl + ')',
+  color: "blue",
+  backgroundImage: "url(" + imgUrl + ")",
 };
 
 function HelloWorldComponent() {
@@ -65,12 +95,13 @@ function HelloWorldComponent() {
 }
 ```
 
-Note that styles are not autoprefixed. To support older browsers, you need to supply corresponding style properties:
+Note that styles are not autoprefixed. To support older browsers, you need to
+supply corresponding style properties:
 
 ```js
 const divStyle = {
-  WebkitTransition: 'all', // note the capital 'W' here
-  msTransition: 'all' // 'ms' is the only lowercase vendor prefix
+  WebkitTransition: "all", // note the capital 'W' here
+  msTransition: "all", // 'ms' is the only lowercase vendor prefix
 };
 
 function ComponentWithTransition() {
@@ -78,9 +109,14 @@ function ComponentWithTransition() {
 }
 ```
 
-Style keys are camelCased in order to be consistent with accessing the properties on DOM nodes from JS (e.g. `node.style.backgroundImage`). Vendor prefixes other than ms should begin with a capital letter. This is why `WebkitTransition` has an uppercase “W”.
+Style keys are camelCased in order to be consistent with accessing the
+properties on DOM nodes from JS (e.g. `node.style.backgroundImage`). Vendor
+prefixes other than ms should begin with a capital letter. This is why
+`WebkitTransition` has an uppercase “W”.
 
-React will automatically append a “px” suffix to certain numeric inline style properties. If you want to use units other than “px”, specify the value as a string with the desired unit. For example:
+React will automatically append a “px” suffix to certain numeric inline style
+properties. If you want to use units other than “px”, specify the value as a
+string with the desired unit. For example:
 
 ```js
 // Result style: '10px'
@@ -94,27 +130,43 @@ React will automatically append a “px” suffix to certain numeric inline styl
 </div>
 ```
 
-Not all style properties are converted to pixel strings though. Certain ones remain unitless (eg `zoom`, `order`, `flex`). A complete list of unitless properties can be seen here.
+Not all style properties are converted to pixel strings though. Certain ones
+remain unitless (eg `zoom`, `order`, `flex`). A complete list of unitless
+properties can be seen here.
 
 ### suppressContentEditableWarning
 
-Normally, there is a warning when an element with children is also marked as `contentEditable`, because it won’t work. This attribute suppresses that warning. Don’t use this unless you are building a library like Draft.js that manages `contentEditable` manually.
+Normally, there is a warning when an element with children is also marked as
+`contentEditable`, because it won’t work. This attribute suppresses that
+warning. Don’t use this unless you are building a library like Draft.js that
+manages `contentEditable` manually.
 
 ### suppressHydrationWarning
 
-If you use server-side React rendering, normally there is a warning when the server and the client render different content. However, in some rare cases, it is very hard or impossible to guarantee an exact match. For example, timestamps are expected to differ on the server and on the client.
+If you use server-side React rendering, normally there is a warning when the
+server and the client render different content. However, in some rare cases, it
+is very hard or impossible to guarantee an exact match. For example, timestamps
+are expected to differ on the server and on the client.
 
-If you set `suppressHydrationWarning` to `true`, React will not warn you about mismatches in the attributes and the content of that element. It only works one level deep, and is intended to be used as an escape hatch. Don’t overuse it. You can read more about hydration in the ReactDOM.hydrateRoot() documentation.
+If you set `suppressHydrationWarning` to `true`, React will not warn you about
+mismatches in the attributes and the content of that element. It only works one
+level deep, and is intended to be used as an escape hatch. Don’t overuse it. You
+can read more about hydration in the ReactDOM.hydrateRoot() documentation.
 
 ### value
 
-The value attribute is supported by `<input>`, `<select>` and `<textarea>` components. You can use it to set the value of the component. This is useful for building controlled components. `defaultValue` is the uncontrolled equivalent, which sets the value of the component when it is first mounted.
+The value attribute is supported by `<input>`, `<select>` and `<textarea>`
+components. You can use it to set the value of the component. This is useful for
+building controlled components. `defaultValue` is the uncontrolled equivalent,
+which sets the value of the component when it is first mounted.
 
 ## All Supported HTML Attributes
 
 As of React 16, any standard or custom DOM attributes are fully supported.
 
-React has always provided a JavaScript-centric API to the DOM. Since React components often take both custom and DOM-related props, React uses the `camelCase` convention just like the DOM APIs:
+React has always provided a JavaScript-centric API to the DOM. Since React
+components often take both custom and DOM-related props, React uses the
+`camelCase` convention just like the DOM APIs:
 
 ```js
 <div tabIndex={-1} />      // Just like node.tabIndex DOM API
@@ -122,7 +174,8 @@ React has always provided a JavaScript-centric API to the DOM. Since React compo
 <input readOnly={true} />  // Just like node.readOnly DOM API
 ```
 
-These props work similarly to the corresponding HTML attributes, with the exception of the special cases documented above.
+These props work similarly to the corresponding HTML attributes, with the
+exception of the special cases documented above.
 
 Some of the DOM attributes supported by React include:
 
