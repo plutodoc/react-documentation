@@ -1,6 +1,118 @@
 # React.Component
 
-## Commonly Used Lifecycle Methods
+This page contains a detailed API reference for the React component class
+definition. It assumes you’re familiar with fundamental React concepts, such as
+Components and Props, as well as State and Lifecycle. If you’re not, read them
+first.
+
+## Overview
+
+React lets you define components as classes or functions. Components defined as
+classes currently provide more features which are described in detail on this
+page. To define a React component class, you need to extend `React.Component`:
+
+```js
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}
+```
+
+The only method you must define in a `React.Component` subclass is called
+`render()`. All the other methods described on this page are optional.
+
+**We strongly recommend against creating your own base component classes**. In
+React components, code reuse is primarily achieved through composition rather
+than inheritance.
+
+:::note
+
+React doesn’t force you to use the ES6 class syntax. If you prefer to avoid it,
+you may use the `create-react-class` module or a similar custom abstraction
+instead. Take a look at Using React without ES6 to learn more.
+
+:::
+
+### The Component Lifecycle
+
+Each component has several “lifecycle methods” that you can override to run code
+at particular times in the process. **You can use this lifecycle diagram as a
+cheat sheet**. In the list below, commonly used lifecycle methods are marked as
+**bold**. The rest of them exist for relatively rare use cases.
+
+#### Mounting
+
+These methods are called in the following order when an instance of a component
+is being created and inserted into the DOM:
+
+- [constructor()](#constructor)
+- [static getDerivedStateFromProps()](#static-getderivedstatefromerror)
+- [render()](#render)
+- [componentDidMount()](#componentdidmount)
+
+:::note
+
+This method is considered legacy and you should avoid it in new code:
+
+- [UNSAFE_componentWillMount()](#unsafe_componentwillmount)
+
+:::
+
+#### Updating
+
+An update can be caused by changes to props or state. These methods are called
+in the following order when a component is being re-rendered:
+
+- [static getDerivedStateFromProps()](#static-getderivedstatefromprops)
+- [shouldComponentUpdate()](#shouldcomponentupdate)
+- [render()](#render)
+- [getSnapshotBeforeUpdate()](#getsnapshotbeforeupdate)
+- [componentDidUpdate()](#componentdidupdate)
+
+:::note
+
+These methods are considered legacy and you should avoid them in new code:
+
+- [UNSAFE_componentWillUpdate()](#unsafe_componentwillupdate)
+- [UNSAFE_componentWillReceiveProps()](#unsafe_componentwillreceiveprops)
+
+:::
+
+#### Unmounting
+
+This method is called when a component is being removed from the DOM:
+
+- [componentWillUnmount()](#componentwillunmount)
+
+#### Error Handling
+
+These methods are called when there is an error during rendering, in a lifecycle
+method, or in the constructor of any child component.
+
+- [static getDerivedStateFromError()](#static-getderivedstatefromerror)
+- [componentDidCatch()](#componentdidcatch)
+
+### Other APIs
+
+Each component also provides some other APIs:
+
+- [setState()](#setstate)
+- [forceUpdate()](#forceupdate)
+
+### Class Properties
+
+- [defaultProps](#defaultprops)
+- [displayName](#displayname)
+
+### Instance Properties
+
+- [props](#props)
+- [state](#state)
+
+## Reference
+
+### Commonly Used Lifecycle Methods
 
 The methods in this section cover the vast majority of use cases you’ll
 encounter creating React components. **For a visual reference, check out this
@@ -66,8 +178,7 @@ component needs to use local state, **assign the initial state to this.state**
 directly in the constructor:
 
 ```js
-constructor(props);
-{
+constructor(props) {
   super(props);
   // Don't call this.setState() here!
   this.state = { counter: 0 };
@@ -86,11 +197,10 @@ those use cases, use `componentDidMount()` instead.
 **Avoid copying props into state! This is a common mistake:**
 
 ```js
-constructor(props);
-{
-  super(props);
-  // Don't do this!
-  this.state = { color: props.color };
+constructor(props) {
+ super(props);
+ // Don't do this!
+ this.state = { color: props.color };
 }
 ```
 
@@ -188,7 +298,7 @@ You **should not call setState()** in `componentWillUnmount()` because the
 component will never be re-rendered. Once a component instance is unmounted, it
 will never be mounted again.
 
-## Rarely Used Lifecycle Methods
+### Rarely Used Lifecycle Methods
 
 The methods in this section correspond to uncommon use cases. They’re handy once
 in a while, but most of your components probably don’t need any of them. **You
@@ -230,7 +340,7 @@ be invoked. In the future React may treat `shouldComponentUpdate()` as a hint
 rather than a strict directive, and returning `false` may still result in a
 re-rendering of the component.
 
-#### static getDerivedStateFromProps()
+### static getDerivedStateFromProps()
 
 ```js
 static getDerivedStateFromProps(props, state)
@@ -457,7 +567,7 @@ rendering instead.
 
 :::
 
-## Legacy Lifecycle Methods
+### Legacy Lifecycle Methods
 
 The lifecycle methods below are marked as “legacy”. They still work, but we
 don’t recommend using them in the new code. You can learn more about migrating
@@ -568,7 +678,7 @@ returns false.
 
 :::
 
-## Other APIs
+### Other APIs
 
 Unlike the lifecycle methods above (which React calls for you), the methods
 below are the methods you can call from your components.
@@ -692,9 +802,9 @@ each child. React will still only update the DOM if the markup changes.
 Normally you should try to avoid all uses of `forceUpdate()` and only read from
 `this.props` and `this.state` in `render()`.
 
-## Class Properties
+### Class Properties
 
-## defaultProps
+### defaultProps
 
 `defaultProps` can be defined as a property on the component class itself, to
 set the default props for the class. This is used for `undefined` props, but not
@@ -714,16 +824,16 @@ If `props.color` is not provided, it will be set by default to `'blue'`:
 
 ```js
 render() {
-    return <CustomButton /> ; // props.color will be set to blue
-  }
+  return <CustomButton /> ; // props.color will be set to blue
+}
 ```
 
 If `props.color` is set to `null`, it will remain `null`:
 
 ```js
 render() {
-    return <CustomButton color={null} /> ; // props.color will remain null
-  }
+  return <CustomButton color={null} /> ; // props.color will remain null
+}
 ```
 
 ### displayName
@@ -735,7 +845,7 @@ want to display a different name for debugging purposes or when you create a
 higher-order component, see Wrap the Display Name for Easy Debugging for
 details.
 
-## Instance Properties
+### Instance Properties
 
 ### props
 

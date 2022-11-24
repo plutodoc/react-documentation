@@ -5,7 +5,102 @@
 use ES6 with npm, you can write `import React from 'react'`. If you use ES5 with
 npm, you can write `var React = require('react')`.
 
-## React.Component
+## Overview
+
+### Components
+
+React components let you split the UI into independent, reusable pieces, and
+think about each piece in isolation. React components can be defined by
+subclassing `React.Component` or `React.PureComponent`.
+
+- [React.Component](#reactcomponent)
+- [React.PureComponent](#reactpurecomponent)
+
+If you don’t use ES6 classes, you may use the `create-react-class` module
+instead. See Using React without ES6 for more information.
+
+React components can also be defined as functions which can be wrapped:
+
+- [React.memo](#reactmemo)
+
+### Creating React Elements
+
+We recommend using JSX to describe what your UI should look like. Each JSX
+element is just syntactic sugar for calling `React.createElement()`. You will
+not typically invoke the following methods directly if you are using JSX.
+
+- [createElement](#createelement)
+- [createFactory](#createfactory)
+
+See Using React without JSX for more information.
+
+### Transforming Elements
+
+`React` provides several APIs for manipulating elements:
+
+- [cloneElement()](#cloneelement)
+- [isValidElement()](#isvalidelement)
+- [React.Children](#reactchildren)
+
+### Fragments
+
+`React` also provides a component for rendering multiple elements without a
+wrapper.
+
+- [React.Fragment](#reactfragment)
+
+### Refs
+
+- [React.createRef](#reactcreateref)
+- [React.forwardRef](#reactforwardref)
+
+### Suspense
+
+Suspense lets components “wait” for something before rendering. Today, Suspense
+only supports one use case: loading components dynamically with `React.lazy`. In
+the future, it will support other use cases like data fetching.
+
+- [React.lazy](#reactlazy)
+- [React.Suspense](#reactsuspense)
+
+### Transitions
+
+_Transitions_ are a new concurrent feature introduced in React 18. They allow
+you to mark updates as transitions, which tells React that they can be
+interrupted and avoid going back to Suspense fallbacks for already visible
+content.
+
+- [React.startTransition](#reactstarttransition)
+- React.useTransition
+
+### Hooks
+
+Hooks are a new addition in React 16.8. They let you use state and other React
+features without writing a class. Hooks have a dedicated docs section and a
+separate API reference:
+
+- Basic Hooks
+  - useState
+  - useEffect
+  - useContext
+- Additional Hooks
+  - useReducer
+  - useCallback
+  - useMemo
+  - useRef
+  - useImperativeHandle
+  - useLayoutEffect
+  - useDebugValue
+  - useDeferredValue
+  - useTransition
+  - useId
+- Library Hooks
+  - useSyncExternalStore
+  - useInsertionEffect
+
+## Reference
+
+### React.Component
 
 `React.Component` is the base class for React components when they are defined
 using ES6 classes:
@@ -21,7 +116,7 @@ class Greeting extends React.Component {
 See the React.Component API Reference for a list of methods and properties
 related to the base `React.Component` class.
 
-## React.PureComponent
+### React.PureComponent
 
 `React.PureComponent` is similar to `React.Component`. The difference between
 them is that `React.Component` doesn’t implement `shouldComponentUpdate()`, but
@@ -46,7 +141,7 @@ are also “pure”.
 
 :::
 
-## React.memo
+### React.memo
 
 ```js
 const MyComponent = React.memo(function MyComponent(props) {
@@ -94,7 +189,7 @@ equal. This is the inverse from `shouldComponentUpdate`.
 
 :::
 
-## createElement()
+### createElement()
 
 ```
 React.createElement(
@@ -112,7 +207,24 @@ Code written with JSX will be converted to use `React.createElement()`. You will
 not typically invoke `React.createElement()` directly if you are using JSX. See
 React Without JSX to learn more.
 
-## cloneElement()
+### createFactory()
+
+```js
+React.createFactory(type);
+```
+
+Return a function that produces React elements of a given type. Like
+`React.createElement()`, the type argument can be either a tag name string (such
+as `'div'` or `'span'`), a React component type (a class or a function), or a
+React fragment type.
+
+This helper is considered legacy, and we encourage you to either use JSX or use
+`React.createElement()` directly instead.
+
+You will not typically invoke `React.createFactory()` directly if you are using
+JSX. See React Without JSX to learn more.
+
+### cloneElement()
 
 ```js
 React.cloneElement(
@@ -142,24 +254,7 @@ old ones if present.
 This API was introduced as a replacement of the deprecated
 `React.addons.cloneWithProps()`.
 
-## createFactory()
-
-```js
-React.createFactory(type);
-```
-
-Return a function that produces React elements of a given type. Like
-`React.createElement()`, the type argument can be either a tag name string (such
-as `'div'` or `'span'`), a React component type (a class or a function), or a
-React fragment type.
-
-This helper is considered legacy, and we encourage you to either use JSX or use
-`React.createElement()` directly instead.
-
-You will not typically invoke `React.createFactory()` directly if you are using
-JSX. See React Without JSX to learn more.
-
-## isValidElement()
+### isValidElement()
 
 ```js
 React.isValidElement(object);
@@ -167,12 +262,12 @@ React.isValidElement(object);
 
 Verifies the object is a React element. Returns `true` or `false`.
 
-## React.Children
+### React.Children
 
 `React.Children` provides utilities for dealing with the `this.props.children`
 opaque data structure.
 
-### React.Children.map
+#### React.Children.map
 
 ```js
 React.Children.map(children, function[(thisArg)])
@@ -190,7 +285,7 @@ traversed.
 
 :::
 
-### React.Children.forEach
+#### React.Children.forEach
 
 ```js
 React.Children.forEach(children, function[(thisArg)])
@@ -198,7 +293,7 @@ React.Children.forEach(children, function[(thisArg)])
 
 Like `React.Children.map()` but does not return an array.
 
-### React.Children.count
+#### React.Children.count
 
 ```js
 React.Children.count(children);
@@ -207,7 +302,7 @@ React.Children.count(children);
 Returns the total number of components in `children`, equal to the number of
 times that a callback passed to `map` or `forEach` would be invoked.
 
-### React.Children.only
+#### React.Children.only
 
 ```js
 React.Children.only(children);
@@ -223,7 +318,7 @@ Otherwise this method throws an error.
 
 :::
 
-### React.Children.toArray
+#### React.Children.toArray
 
 ```js
 React.Children.toArray(children);
@@ -243,7 +338,7 @@ containing it.
 
 :::
 
-## React.Fragment
+### React.Fragment
 
 The `React.Fragment` component lets you return multiple elements in a `render()`
 method without creating an additional DOM element:
@@ -262,7 +357,7 @@ render() {
 You can also use it with the shorthand `<></>` syntax. For more information, see
 React v16.2.0: Improved Support for Fragments.
 
-## React.createRef
+### React.createRef
 
 `React.createRef` creates a `ref` that can be attached to React elements via the
 ref attribute.
@@ -320,7 +415,7 @@ the `<button>` DOM element instance.
 
 For more information, see forwarding refs.
 
-## React.lazy
+### React.lazy
 
 `React.lazy()` lets you define a component that is loaded dynamically. This
 helps reduce the bundle size to delay loading components that aren’t used during
@@ -338,7 +433,7 @@ Note that rendering `lazy` components requires that there’s a `<React.Suspense
 component higher in the rendering tree. This is how you specify a loading
 indicator.
 
-## React.Suspense
+### React.Suspense
 
 `React.Suspense` lets you specify the loading indicator in case some components
 in the tree below it are not yet ready to render. In the future we plan to let
@@ -379,7 +474,7 @@ unexpected fallbacks.
 
 :::
 
-### React.Suspense in Server Side Rendering
+#### React.Suspense in Server Side Rendering
 
 During server side rendering Suspense Boundaries allow you to flush your
 application in smaller chunks by suspending. When a component suspends we
@@ -387,14 +482,14 @@ schedule a low priority task to render the closest Suspense boundary’s fallbac
 If the component unsuspends before we flush the fallback then we send down the
 actual content and throw away the fallback.
 
-### React.Suspense during hydration
+#### React.Suspense during hydration
 
 Suspense boundaries depend on their parent boundaries being hydrated before they
 can hydrate, but they can hydrate independently from sibling boundaries. Events
 on a boundary before its hydrated will cause the boundary to hydrate at a higher
 priority than neighboring boundaries. Read more
 
-## React.startTransition
+### React.startTransition
 
 ```js
 React.startTransition(callback);
