@@ -22,6 +22,7 @@ const sidebars = {
   apiSidebar: [
     "api/react",
     "api/react-component",
+    "api/react-dom",
   ],
 };
 
